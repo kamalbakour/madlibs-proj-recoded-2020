@@ -17,8 +17,8 @@
  * Output: [
  *  { word: "Louis", pos: "noun" },
  *  { word: "went", pos: "verb", },
- *  { word: "to", },
- *  { word: "the", },
+ *  { word: "to" },
+ *  { word: "the" },
  *  { word: "store", pos: "noun" }
  *  { word: "," }
  *  ....
@@ -28,9 +28,101 @@
  */
 function parseStory(rawStory) {
     // Your code here.
-    return {}; // This line is currently wrong :)
-  }
+    const storyArr = new Array;
+    let result;
+    let pos1;
+
+    const nRegex = /^\s?\w+\W[nva]\W/i;
+    const wRegex = /^\s?\w+\b/i;
+    const cRegex = /\s?\W/i;
+    // const vRegex = /^\s?\w+\Wv\W/;
+
+    while (rawStory.length){
+    // for (let i =0;i<4;i++){
+    if (nRegex.exec(rawStory)){
+      result= nRegex.exec(rawStory);
+      switch (result[0][result[0].length-2]){
+        case 'n': pos1 = 'noun';
+                break;
+        case 'v': pos1 ='verb';
+                break;
+        default : pos1 = 'adjective';
+                break;
+      }
+      
+      if(result[0][0]===' '){
+        storyArr.push({
+          word : result[0].substr(1,result[0].length-4),
+          pos: pos1
+        })
+      }else{
+      storyArr.push({
+        word : result[0].substr(0,result[0].length-3),
+        pos: "verb"
+      })}// PUSHING THE STRING TO THE ARRAY
+      
+      rawStory= rawStory.replace(result[0],'');
+      
+     }else if (wRegex.exec(rawStory)){
+      result= wRegex.exec(rawStory);
+     
+
+      if(result[0][0]===' '){
+        storyArr.push({
+          word : result[0].substr(1,result[0].length),
+        })
+      }else{
+      storyArr.push({
+        word : result[0].substr(0,result[0].length),
+      })}// PUSHING THE STRING TO THE ARRAY
+
+      rawStory= rawStory.replace(result[0],'');
+
+    }else if (cRegex.exec(rawStory)){
+      result= cRegex.exec(rawStory);
+     
+
+      if(result[0][0]===' '){
+        storyArr.push({
+          word : result[0].substr(1,result[0].length),
+        })
+      }else{
+      storyArr.push({
+        word : result[0].substr(0,result[0].length),
+      })}// PUSHING THE STRING TO THE ARRAY
+
+      rawStory= rawStory.replace(result[0],'');
+
+    }
+    
+
+
+    }
   
+    return storyArr;
+
+  }
+    
+    // }
+
+    // function parsingStory (result , rawStory, ...storyArr){
+    //   storyArr.push({
+    //     word : result[0].substr(0,result[0].length-3),
+    //     pos: "noun"
+    //   }) // PUSHING THE STRING TO THE ARRAY
+    
+    //   console.log(storyArr)
+    //   // CHECKING IF THERE'S WHITE SPACE BEFORE
+    //   switch(result.index){
+    //   case 0:rawStory= rawStory.replace(result[0],'');
+    //         break;
+    //   case 1:rawStory= rawStory.replace(' ' + result[0],'');
+    //       break
+    //     }
+        
+    // }
+  
+
   /**
    * All your other JavaScript code goes here, inside the function. Don't worry about
    * the `then` and `async` syntax for now.
